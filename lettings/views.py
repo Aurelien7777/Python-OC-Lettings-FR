@@ -5,7 +5,6 @@ from lettings.models import Letting
 
 
 def lettings_index(request):
-    
     """Display the list of all lettings.
 
     Args:
@@ -20,7 +19,6 @@ def lettings_index(request):
 
 
 def letting(request, letting_id):
-    
     """Display the detail page for one letting.
 
     Args:

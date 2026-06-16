@@ -5,7 +5,6 @@ from profiles.models import Profile
 
 
 def profiles_index(request):
-    
     """Display the list of all user profiles.
 
     Args:
@@ -20,7 +19,6 @@ def profiles_index(request):
 
 
 def profile(request, username):
-    
     """Display the detail page for one user profile.
 
     Args:

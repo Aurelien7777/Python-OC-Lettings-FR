@@ -12,4 +12,4 @@ def index(request):
     Returns:
         HttpResponse: Rendered home page.
     """
-    return render(request, "index.html")
+    return render(request, "oc_lettings_site/index.html")
