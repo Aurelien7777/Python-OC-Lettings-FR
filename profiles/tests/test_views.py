@@ -60,7 +60,7 @@ class ProfilesViewsTest(TestCase):
         )
 
         self.assertEqual(response.context["profile"], self.profile)
-    
+
     def test_profile_detail_returns_404_when_not_found(self):
         response = self.client.get(reverse("profile", kwargs={"username": "unknown"}))
 
