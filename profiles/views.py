@@ -1,7 +1,11 @@
 """Views for the profiles application."""
 
-from django.shortcuts import render
+import logging
+
+from django.shortcuts import render, get_object_or_404
 from profiles.models import Profile
+
+logger = logging.getLogger(__name__)
 
 
 def profiles_index(request):
@@ -14,6 +18,7 @@ def profiles_index(request):
         HttpResponse: Rendered profiles index page.
     """
     profiles_list = Profile.objects.all()
+    logger.info("Profiles index page accessed.")
     context = {"profiles_list": profiles_list}
     return render(request, "profiles/profiles_index.html", context)
 
@@ -28,6 +33,7 @@ def profile(request, username):
     Returns:
         HttpResponse: Rendered profile detail page.
     """
-    profile = Profile.objects.get(user__username=username)
+    logger.info("Profile detail page requested.", extra={"username": username})
+    profile = get_object_or_404(Profile, user__username=username)
     context = {"profile": profile}
     return render(request, "profiles/profile.html", context)

@@ -67,3 +67,8 @@ class LettingsViewsTest(TestCase):
 
         self.assertEqual(response.context["title"], "Beautiful apartment")
         self.assertEqual(response.context["address"], self.address)
+
+    def test_letting_detail_returns_404_when_not_found(self):
+        response = self.client.get(reverse("letting", kwargs={"letting_id": 999}))
+
+        self.assertEqual(response.status_code, 404)

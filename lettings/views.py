@@ -1,7 +1,11 @@
 """Views for the lettings application."""
 
-from django.shortcuts import render
+import logging
+
+from django.shortcuts import render, get_object_or_404
 from lettings.models import Letting
+
+logger = logging.getLogger(__name__)
 
 
 def lettings_index(request):
@@ -14,6 +18,7 @@ def lettings_index(request):
         HttpResponse: Rendered lettings index page.
     """
     lettings_list = Letting.objects.all()
+    logger.info("Lettings index page accessed.")
     context = {"lettings_list": lettings_list}
     return render(request, "lettings/lettings_index.html", context)
 
@@ -28,7 +33,8 @@ def letting(request, letting_id):
     Returns:
         HttpResponse: Rendered letting detail page.
     """
-    letting = Letting.objects.get(id=letting_id)
+    logger.info("Letting detail page requested.", extra={"letting_id": letting_id})
+    letting = get_object_or_404(Letting, id=letting_id)
     context = {
         "title": letting.title,
         "address": letting.address,
