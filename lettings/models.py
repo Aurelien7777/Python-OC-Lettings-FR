@@ -23,6 +23,11 @@ class Address(models.Model):
         max_length=3, validators=[MinLengthValidator(3)]
     )
 
+    class Meta:
+        """Metadata for Address model."""
+
+        verbose_name_plural = "Addresses"
+
     def __str__(self):
         """Return a readable address representation.
 
