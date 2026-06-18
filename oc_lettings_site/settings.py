@@ -23,7 +23,7 @@ if SENTRY_DSN:
                 sentry_logs_level=logging.INFO,
                 level=logging.INFO,
                 event_level=logging.ERROR,
-                ),
+            ),
         ],
         traces_sample_rate=1.0,
         send_default_pii=True,

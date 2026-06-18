@@ -26,19 +26,19 @@ class LettingsViewsTest(TestCase):
 
     def test_lettings_index_returns_status_code_200(self):
         """Test that lettings index page is accessible."""
-        response = self.client.get(reverse("lettings_index"))
+        response = self.client.get(reverse("lettings:index"))
 
         self.assertEqual(response.status_code, 200)
 
     def test_lettings_index_uses_expected_template(self):
         """Test that lettings index uses the expected template."""
-        response = self.client.get(reverse("lettings_index"))
+        response = self.client.get(reverse("lettings:index"))
 
-        self.assertTemplateUsed(response, "lettings/lettings_index.html")
+        self.assertTemplateUsed(response, "lettings/index.html")
 
     def test_lettings_index_contains_lettings_list(self):
         """Test that lettings index contains the lettings list."""
-        response = self.client.get(reverse("lettings_index"))
+        response = self.client.get(reverse("lettings:index"))
 
         self.assertIn("lettings_list", response.context)
         self.assertEqual(list(response.context["lettings_list"]), [self.letting])
@@ -46,7 +46,7 @@ class LettingsViewsTest(TestCase):
     def test_letting_detail_returns_status_code_200(self):
         """Test that letting detail page is accessible."""
         response = self.client.get(
-            reverse("letting", kwargs={"letting_id": self.letting.id})
+            reverse("lettings:letting", kwargs={"letting_id": self.letting.id})
         )
 
         self.assertEqual(response.status_code, 200)
@@ -54,7 +54,7 @@ class LettingsViewsTest(TestCase):
     def test_letting_detail_uses_expected_template(self):
         """Test that letting detail uses the expected template."""
         response = self.client.get(
-            reverse("letting", kwargs={"letting_id": self.letting.id})
+            reverse("lettings:letting", kwargs={"letting_id": self.letting.id})
         )
 
         self.assertTemplateUsed(response, "lettings/letting.html")
@@ -62,13 +62,15 @@ class LettingsViewsTest(TestCase):
     def test_letting_detail_contains_expected_context(self):
         """Test that letting detail contains expected context data."""
         response = self.client.get(
-            reverse("letting", kwargs={"letting_id": self.letting.id})
+            reverse("lettings:letting", kwargs={"letting_id": self.letting.id})
         )
 
         self.assertEqual(response.context["title"], "Beautiful apartment")
         self.assertEqual(response.context["address"], self.address)
 
     def test_letting_detail_returns_404_when_not_found(self):
-        response = self.client.get(reverse("letting", kwargs={"letting_id": 999}))
+        response = self.client.get(
+            reverse("lettings:letting", kwargs={"letting_id": 999})
+        )
 
         self.assertEqual(response.status_code, 404)

@@ -8,7 +8,7 @@ from profiles.models import Profile
 logger = logging.getLogger(__name__)
 
 
-def profiles_index(request):
+def index(request):
     """Display the list of all user profiles.
 
     Args:
@@ -20,7 +20,7 @@ def profiles_index(request):
     profiles_list = Profile.objects.all()
     logger.info("Profiles index page accessed.")
     context = {"profiles_list": profiles_list}
-    return render(request, "profiles/profiles_index.html", context)
+    return render(request, "profiles/index.html", context)
 
 
 def profile(request, username):

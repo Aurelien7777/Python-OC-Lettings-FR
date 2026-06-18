@@ -8,7 +8,7 @@ from lettings.models import Letting
 logger = logging.getLogger(__name__)
 
 
-def lettings_index(request):
+def index(request):
     """Display the list of all lettings.
 
     Args:
@@ -20,7 +20,7 @@ def lettings_index(request):
     lettings_list = Letting.objects.all()
     logger.info("Lettings index page accessed.")
     context = {"lettings_list": lettings_list}
-    return render(request, "lettings/lettings_index.html", context)
+    return render(request, "lettings/index.html", context)
 
 
 def letting(request, letting_id):
