@@ -26,7 +26,7 @@ if SENTRY_DSN:
             ),
         ],
         traces_sample_rate=1.0,
-        send_default_pii=True,
+        send_default_pii=False,
         enable_logs=True,
         environment=os.getenv("SENTRY_ENVIRONMENT", "development"),
     )

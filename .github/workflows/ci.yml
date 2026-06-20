@@ -3,7 +3,6 @@ name: CI
 on:
   push:
     branches:
-      - master
       - "**"
   pull_request:
 
@@ -60,7 +59,16 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          push: True
+          push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings:${{ github.sha }}i
+            ${{ secrets.DOCKERHUB_USERNAME }}/oc-lettings:${{ github.sha }}
+
+  deploy-render:
+    runs-on: ubuntu-22.04
+    needs: docker-build
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Trigger Render deployment
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
