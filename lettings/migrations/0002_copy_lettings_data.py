@@ -2,6 +2,8 @@ from django.db import migrations
 
 
 def copy_lettings_data(apps, schema_editor):
+    """Copy existing addresses and lettings into the new application."""
+    
     OldAddress = apps.get_model("oc_lettings_site", "Address")
     OldLetting = apps.get_model("oc_lettings_site", "Letting")
 

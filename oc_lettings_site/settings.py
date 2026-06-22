@@ -1,3 +1,5 @@
+"""Django settings for the OC Lettings project."""
+
 import os
 import logging
 
