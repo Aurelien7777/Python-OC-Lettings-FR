@@ -1,77 +1,213 @@
-## Résumé
+# OC Lettings
 
-Site web d'Orange County Lettings
+OC Lettings est une application web Django permettant de consulter des locations immobilières et des profils utilisateurs.
 
-## Développement local
+Le projet a été refactorisé afin de passer d'une architecture monolithique à une architecture modulaire, puis conteneurisé, testé et déployé avec une chaîne CI/CD.
+
+## Liens
+
+- Application en production : https://oc-lettings-47nw.onrender.com/
+- Documentation : https://python-oc-lettings-fr-aurelien7777.readthedocs.io/fr/latest/
+- Dépôt GitHub : https://github.com/Aurelien7777/Python-OC-Lettings-FR
+
+## Fonctionnalités
+
+- consultation de la liste des locations ;
+- consultation du détail d'une location ;
+- consultation de la liste des profils ;
+- consultation du détail d'un profil ;
+- administration des données avec l'interface Django ;
+- pages d'erreur personnalisées ;
+- surveillance des erreurs avec Sentry.
+
+## Technologies
+
+- Python 3.7 ;
+- Django 3.0 ;
+- SQLite ;
+- Gunicorn ;
+- WhiteNoise ;
+- Docker ;
+- GitHub Actions ;
+- Docker Hub ;
+- Render ;
+- Sentry ;
+- Sphinx ;
+- Read the Docs.
+
+## Architecture
+
+Le projet est organisé en trois composants principaux :
+
+- `oc_lettings_site` : configuration générale, page d'accueil et pages d'erreur ;
+- `lettings` : gestion des adresses et des locations ;
+- `profiles` : gestion des profils utilisateurs.
+
+## Installation locale
 
 ### Prérequis
 
-- Compte GitHub avec accès en lecture à ce repository
-- Git CLI
-- SQLite3 CLI
-- Interpréteur Python, version 3.6 ou supérieure
+- Git ;
+- Python 3.7 ;
+- `pip` ;
+- le module `venv`.
 
-Dans le reste de la documentation sur le développement local, il est supposé que la commande `python` de votre OS shell exécute l'interpréteur Python ci-dessus (à moins qu'un environnement virtuel ne soit activé).
+### Cloner le dépôt
 
-### macOS / Linux
+```bash
+git clone https://github.com/Aurelien7777/Python-OC-Lettings-FR.git
+cd Python-OC-Lettings-FR
+```
 
-#### Cloner le repository
+### Créer l'environnement virtuel
 
-- `cd /path/to/put/project/in`
-- `git clone https://github.com/OpenClassrooms-Student-Center/Python-OC-Lettings-FR.git`
+Sous Windows :
 
-#### Créer l'environnement virtuel
+```powershell
+py -3.7 -m venv venv
+.\venv\Scripts\Activate.ps1
+```
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `python -m venv venv`
-- `apt-get install python3-venv` (Si l'étape précédente comporte des erreurs avec un paquet non trouvé sur Ubuntu)
-- Activer l'environnement `source venv/bin/activate`
-- Confirmer que la commande `python` exécute l'interpréteur Python dans l'environnement virtuel
-`which python`
-- Confirmer que la version de l'interpréteur Python est la version 3.6 ou supérieure `python --version`
-- Confirmer que la commande `pip` exécute l'exécutable pip dans l'environnement virtuel, `which pip`
-- Pour désactiver l'environnement, `deactivate`
+Sous macOS ou Linux :
 
-#### Exécuter le site
+```bash
+python3.7 -m venv venv
+source venv/bin/activate
+```
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
-- `pip install --requirement requirements.txt`
-- `python manage.py runserver`
-- Aller sur `http://localhost:8000` dans un navigateur.
-- Confirmer que le site fonctionne et qu'il est possible de naviguer (vous devriez voir plusieurs profils et locations).
+### Installer les dépendances
 
-#### Linting
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
-- `flake8`
+### Configurer les variables d'environnement
 
-#### Tests unitaires
+Créer un fichier `.env` à la racine du projet :
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- `source venv/bin/activate`
-- `pytest`
+```env
+SECRET_KEY=replace-with-a-local-secret-key
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+SENTRY_ENVIRONMENT=development
+```
 
-#### Base de données
+Pour activer Sentry localement :
 
-- `cd /path/to/Python-OC-Lettings-FR`
-- Ouvrir une session shell `sqlite3`
-- Se connecter à la base de données `.open oc-lettings-site.sqlite3`
-- Afficher les tables dans la base de données `.tables`
-- Afficher les colonnes dans le tableau des profils, `pragma table_info(Python-OC-Lettings-FR_profile);`
-- Lancer une requête sur la table des profils, `select user_id, favorite_city from
-  Python-OC-Lettings-FR_profile where favorite_city like 'B%';`
-- `.quit` pour quitter
+```env
+SENTRY_DSN=replace-with-your-sentry-dsn
+```
 
-#### Panel d'administration
+Le fichier `.env` ne doit pas être ajouté au dépôt Git.
 
-- Aller sur `http://localhost:8000/admin`
-- Connectez-vous avec l'utilisateur `admin`, mot de passe `Abc1234!`
+### Appliquer les migrations
 
-### Windows
+```bash
+python manage.py migrate
+```
 
-Utilisation de PowerShell, comme ci-dessus sauf :
+### Lancer l'application
 
-- Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
-- Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+```bash
+python manage.py runserver
+```
+
+L'application est accessible à l'adresse suivante :
+
+http://127.0.0.1:8000/
+
+## Administration
+
+Créer un compte administrateur :
+
+```bash
+python manage.py createsuperuser
+```
+
+Puis ouvrir :
+
+http://127.0.0.1:8000/admin/
+
+## Tests et qualité du code
+
+### Tests avec couverture
+
+```bash
+coverage run manage.py test
+coverage report --fail-under=80
+```
+
+La CI exige une couverture minimale de 80 %.
+
+### Linting
+
+```bash
+flake8
+```
+
+## Docker
+
+### Construire l'image
+
+```bash
+docker build -t oc-lettings:local .
+```
+
+### Lancer le conteneur sous PowerShell
+
+```powershell
+docker run --rm -p 8000:8000 -e SECRET_KEY=django-insecure-local -e DEBUG=False -e ALLOWED_HOSTS=localhost,127.0.0.1 oc-lettings:local
+```
+
+L'application est alors accessible à l'adresse suivante :
+
+http://127.0.0.1:8000/
+
+## CI/CD
+
+Le workflow GitHub Actions :
+
+1. exécute les tests Django avec `coverage` ;
+2. vérifie que la couverture atteint au moins 80 % ;
+3. exécute `flake8` ;
+4. construit l'image Docker sur la branche `master` ;
+5. publie l'image sur Docker Hub avec les tags `latest` et le SHA du commit ;
+6. déclenche le déploiement sur Render.
+
+Image Docker de production :
+
+```text
+docker.io/aurelienamorin/oc-lettings:latest
+```
+
+## Surveillance avec Sentry
+
+Sentry centralise les erreurs rencontrées par l'application.
+
+La configuration repose principalement sur les variables suivantes :
+
+- `SENTRY_DSN` ;
+- `SENTRY_ENVIRONMENT`.
+
+L'option `send_default_pii` est désactivée afin de ne pas transmettre automatiquement les données personnelles des utilisateurs.
+
+## Documentation
+
+La documentation technique est générée avec Sphinx et publiée sur Read the Docs :
+
+https://python-oc-lettings-fr-aurelien7777.readthedocs.io/fr/latest/
+
+Pour construire la documentation localement :
+
+```powershell
+cd docs
+.\make.bat clean
+.\make.bat html
+```
+
+Les fichiers HTML sont générés dans :
+
+```text
+docs/build/html/
+```
