@@ -7,6 +7,8 @@ Contexte
 OC Lettings est une application web développée avec Django pour une entreprise
 spécialisée dans la location de biens immobiliers.
 
+OPENCLASSROOMS
+
 L'application permet de consulter :
 
 * la liste des locations disponibles ;
